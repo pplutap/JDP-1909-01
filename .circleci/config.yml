@@ -39,7 +39,7 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: ./gradlew sonarqube 
+      - run: ./gradle sonarqube 
             -Dsonar.projectKey=jdp-1909-01 
             -Dsonar.organization=pplutap-github 
             -Dsonar.host.url=https://sonarcloud.io 
