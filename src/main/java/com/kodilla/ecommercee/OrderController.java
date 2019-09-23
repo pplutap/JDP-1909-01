@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/v1/orders")
 public class OrderController {
 
-    ProductController productController = new ProductController();
+    private ProductController productController = new ProductController();
     private List<OrderDto> orders;
 
     public OrderController() {
@@ -40,7 +40,6 @@ public class OrderController {
         }
         return orders;
     }
-
 
     @RequestMapping(method = RequestMethod.GET, value = "getOrders")
     public List<OrderDto> getOrders(){
