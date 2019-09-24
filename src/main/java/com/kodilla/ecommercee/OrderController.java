@@ -3,6 +3,7 @@ package com.kodilla.ecommercee;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +72,19 @@ public class OrderController {
                 .orElse(0L);
         orders.add(new OrderDto(maxId, 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
                 "AWAITING PAYMENT", LocalDateTime.now().plusDays(5)));
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, consumes = APPLICATION_JSON_VALUE)
+    public OrderDto updateOrder(@RequestBody OrderDto orderDto) {
+        if (orderDto.getId() == null) {
+            throw new RuntimeException("Order id can't be null.");
+        }
+        OrderDto oldProductDto = orders.stream()
+                .filter(order -> order.getId().equals(orderDto.getId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Order non-existent."));
+        orders.remove(oldProductDto);
+        orders.add(orderDto);
+        return orderDto;
     }
 }
