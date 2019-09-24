@@ -41,21 +41,21 @@ public class OrderController {
         return orders;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getOrders")
+    @RequestMapping(method = RequestMethod.GET)
     public List<OrderDto> getOrders(){
         return orders;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getOrder")
-    public OrderDto getOrderById(@RequestParam(name = "id") Long orderId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/{orderId}")
+    public OrderDto getOrderById(@PathVariable Long orderId) {
         return orders.stream()
                 .filter(order -> order.getId().equals(orderId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Order not found"));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteOrder")
-    public void deleteOrder(@RequestParam(name = "id") Long orderId){
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{orderId}")
+    public void deleteOrder(@PathVariable Long orderId){
         OrderDto orderToDelete = orders.stream()
                 .filter(product -> product.getId().equals(orderId))
                 .findFirst()
@@ -63,7 +63,7 @@ public class OrderController {
         orders.remove(orderToDelete);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createOrder", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     public void createOrder(@RequestBody CartDto cartDto) {
         long maxId = orders.stream()
                 .map(OrderDto::getId)
