@@ -50,7 +50,7 @@ public class OrderController {
                 .map(OrderDto::getId)
                 .max(Long::compareTo)
                 .orElse(0L);
-        OrderDto newOrder = new OrderDto(maxId, 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
+        OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
                 "AWAITING PAYMENT", LocalDateTime.now().plusDays(5));
         OrderService.getOrders().add(newOrder);
         return newOrder;
