@@ -38,14 +38,4 @@ public class OrderDto {
         this.orderValue = orderValue;
     }
 
-    public OrderDto(Long id, Long buyerId, Long sellerId, LocalDateTime purchaseDate, List<ProductDto> products, String status, LocalDateTime deliveryDate, BigDecimal orderValue) {
-        this.id = id;
-        this.buyerId = buyerId;
-        this.sellerId = sellerId;
-        this.purchaseDate = purchaseDate;
-        this.products = products;
-        this.status = status;
-        this.deliveryDate = deliveryDate;
-        this.orderValue = orderValue;
-    }
 }

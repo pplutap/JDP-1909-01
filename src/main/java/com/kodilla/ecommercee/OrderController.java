@@ -3,9 +3,6 @@ package com.kodilla.ecommercee;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
-import com.kodilla.ecommercee.service.OrderService;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -22,14 +19,50 @@ public class OrderController {
     public OrderController() {
     }
 
+    private List<ProductDto> initializeSampleProducts() {
+        List<ProductDto> products = new ArrayList<>();
+        String[] names = {"Ubrania", "Kostmetyki", "Samochdy", "Elektronika"};
+        String descripiton = "Dummy item description.";
+        for (int id = 0; id < names.length; id++) {
+            products.add(new ProductDto(
+                    (long) (id + 1),
+                    names[id],
+                    descripiton,
+                    new BigDecimal(id*100),
+                    (long)id
+            ));
+        }
+        return products;
+    }
+
+    private List<OrderDto> generateOrders() {
+        List<OrderDto> orders = new ArrayList<>();
+        LocalDateTime purchaseDate = LocalDateTime.of(2019, Month.SEPTEMBER, 1, 10, 30, 0);
+        LocalDateTime deliveryDate = purchaseDate.plusDays(5);
+        List<ProductDto> products = initializeSampleProducts();
+        for (int i = 0; i < products.size(); i++) {
+            List<ProductDto> productsList = new ArrayList<>();
+            Long orderId = Long.valueOf(i + 1);
+            for (int j = 0; j <= i; j++) {
+                productsList.add(products.get(j));
+
+            }
+            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, "DELIVERED", deliveryDate));
+        }
+        return orders;
+    }
+
+
+
+
     @RequestMapping(method = RequestMethod.GET)
     public List<OrderDto> getOrders(){
-        return OrderService.getOrders();
+        return generateOrders();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{orderId}")
     public OrderDto getOrderById(@PathVariable Long orderId) {
-        return OrderService.getOrders().stream()
+        return generateOrders().stream()
                 .filter(order -> order.getId().equals(orderId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Order not found"));
@@ -37,22 +70,22 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{orderId}")
     public void deleteOrder(@PathVariable Long orderId){
-        OrderDto orderToDelete = OrderService.getOrders().stream()
+        OrderDto orderToDelete = generateOrders().stream()
                 .filter(product -> product.getId().equals(orderId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Order non-existent"));
-        OrderService.getOrders().remove(orderToDelete);
+        generateOrders().remove(orderToDelete);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     public OrderDto createOrder(@RequestBody CartDto cartDto) {
-        long maxId = OrderService.getOrders().stream()
+        long maxId = generateOrders().stream()
                 .map(OrderDto::getId)
                 .max(Long::compareTo)
                 .orElse(0L);
         OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
                 "AWAITING PAYMENT", LocalDateTime.now().plusDays(5));
-        OrderService.getOrders().add(newOrder);
+        generateOrders().add(newOrder);
         return newOrder;
     }
 
@@ -61,12 +94,12 @@ public class OrderController {
         if (orderDto.getId() == null) {
             throw new RuntimeException("Order id can't be null.");
         }
-        OrderDto oldProductDto = OrderService.getOrders().stream()
+        OrderDto oldProductDto = generateOrders().stream()
                 .filter(order -> order.getId().equals(orderDto.getId()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Order non-existent."));
-        OrderService.getOrders().remove(oldProductDto);
-        OrderService.getOrders().add(orderDto);
+        generateOrders().remove(oldProductDto);
+        generateOrders().add(orderDto);
         return orderDto;
     }
 }
