@@ -1,28 +1,15 @@
 package com.kodilla.ecommercee.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class GroupDto {
 
     private Long id;
     private String name;
-
-    public GroupDto() {
-    }
-
-    public GroupDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
 
 }

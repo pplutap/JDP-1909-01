@@ -1,8 +1,6 @@
 package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.dto.GroupDto;
-import com.kodilla.ecommercee.service.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,37 +9,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/groups")
 public class GroupController {
 
-    private final GroupService groupService;
-
-    @Autowired
-    public GroupController(final GroupService groupService) {
-        this.groupService = groupService;
-    }
-
     @GetMapping
     public List<GroupDto> getAllGroups() {
-        return groupService.getGroups();
+        return getSampleData();
+    }
+
+    private List<GroupDto> getSampleData() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        new GroupDto(1L, "Ubrania"),
+                        new GroupDto(2L, "Dodatki"),
+                        new GroupDto(3L, "Biżuteria"),
+                        new GroupDto(4L, "Obuwie")
+                ));
     }
 
     @GetMapping("/{id}")
     public GroupDto getGroup(@PathVariable Long id) {
-        return groupService.getGroup(id);
+        return getSampleData().get(0);
     }
 
     @PostMapping
-    public GroupDto createGroup(@RequestBody GroupDto groupDto) {
-        return groupService.createGroup(groupDto);
+    public GroupDto createGroup(@RequestBody GroupDto group) {
+        return group;
     }
 
     @PutMapping
-    public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
-        return groupService.updateGroup(groupDto);
+    public GroupDto updateGroup(@RequestBody GroupDto group) {
+        return group;
     }
 
 }
