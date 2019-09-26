@@ -1,16 +1,19 @@
 package com.kodilla.ecommercee;
 
 import com.kodilla.ecommercee.dto.CartDto;
+import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -88,14 +91,33 @@ public class CartController {
     @DeleteMapping("/{id}/products/{productId}")
     public List<ProductDto> removeProductFromCart(@PathVariable Long id, @PathVariable Long productId) {
         CartDto cart = sampleCarts.stream()
-                .filter(cartDto -> cartDto.getId().equals(id))
+                .filter(c -> c.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Cart not found."));
         Optional<ProductDto> product = cart.getProducts().stream()
-                .filter(productDto -> productDto.getId().equals(productId))
+                .filter(p -> p.getId().equals(productId))
                 .findFirst();
-        product.ifPresent(productDto -> cart.getProducts().remove(productDto));
+        product.ifPresent(p -> cart.getProducts().remove(p));
         return cart.getProducts();
+    }
+
+    @PostMapping("/{id}/orders")
+    public OrderDto createOrder(@PathVariable Long id, @RequestBody OrderDto orderDto) {
+        CartDto cart = sampleCarts.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Cart not found."));
+        OrderDto newOrder = new OrderDto(
+                100L,
+                orderDto.getBuyerId(),
+                orderDto.getSellerId(),
+                LocalDateTime.now(),
+                new ArrayList<>(cart.getProducts()),
+                "AWAITING PAYMENT",
+                orderDto.getDeliveryDate()
+        );
+        sampleCarts.remove(cart);
+        return newOrder;
     }
     
 }
