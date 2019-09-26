@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -47,11 +48,20 @@ public class OrderController {
                 productsList.add(products.get(j));
 
             }
-            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, "DELIVERED", deliveryDate));
+            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, "DELIVERED", deliveryDate, orderValue(productsList)));
         }
         return orders;
     }
 
+    private BigDecimal orderValue(List<ProductDto> products) {
+        BigDecimal output = new BigDecimal(0);
+
+        for (ProductDto product : products) {
+            output.add(product.getPrice());
+        }
+
+        return output;
+    }
 
 
 
@@ -84,7 +94,7 @@ public class OrderController {
                 .max(Long::compareTo)
                 .orElse(0L);
         OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
-                "AWAITING PAYMENT", LocalDateTime.now().plusDays(5));
+                "AWAITING PAYMENT", LocalDateTime.now().plusDays(5), orderValue(cartDto.getProducts()));
         generateOrders().add(newOrder);
         return newOrder;
     }

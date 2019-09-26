@@ -27,15 +27,5 @@ public class OrderDto {
     private LocalDateTime deliveryDate;
     private BigDecimal orderValue;
 
-    public OrderDto(long maxId, long l, long l1, LocalDateTime now, List<ProductDto> products, String awaiting_payment, LocalDateTime plusDays) {
-        this.id = id;
-        this.buyerId = buyerId;
-        this.sellerId = sellerId;
-        this.purchaseDate = purchaseDate;
-        this.products = products;
-        this.status = status;
-        this.deliveryDate = deliveryDate;
-        this.orderValue = orderValue;
-    }
 
 }
