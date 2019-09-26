@@ -1,7 +1,14 @@
 package com.kodilla.ecommercee.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class ProductDto {
 
     private Long id;
@@ -9,40 +16,5 @@ public class ProductDto {
     private String description;
     private BigDecimal price;
     private Long groupId;
-
-    public ProductDto() {
-    }
-
-    public ProductDto(Long id, String name, String description, BigDecimal price, Long groupId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.groupId = groupId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
 
 }
