@@ -27,5 +27,4 @@ public class OrderDto {
     private LocalDateTime deliveryDate;
     private BigDecimal orderValue;
 
-
 }
