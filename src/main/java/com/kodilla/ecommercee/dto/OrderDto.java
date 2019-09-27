@@ -7,11 +7,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-/**
- * OrderDto class still WIP (no specification confirmed as of 22/09/2019)
- * Field products Could be replaced by a ProductWrapper class Wrapper(Product product, Integer quantity)
- * other option is Map<Product,Integer> for the storage of products and their quantity
- */
 
 @Getter
 @AllArgsConstructor
