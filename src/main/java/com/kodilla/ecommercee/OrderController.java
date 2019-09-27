@@ -4,12 +4,10 @@ import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -54,13 +52,9 @@ public class OrderController {
     }
 
     private BigDecimal orderValue(List<ProductDto> products) {
-        BigDecimal output = new BigDecimal(0);
-
-        for (ProductDto product : products) {
-            output.add(product.getPrice());
-        }
-
-        return output;
+        return products.stream()
+                .map(ProductDto::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 
