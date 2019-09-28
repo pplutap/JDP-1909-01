@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,15 +53,7 @@ public class CartController {
 
     @PostMapping("/{id}/orders")
     public OrderDto createOrder(@PathVariable Long id, @RequestBody OrderDto order) {
-        return new OrderDto(
-                9L,
-                1L,
-                2L,
-                LocalDateTime.now(),
-                getSampleProducts(),
-                "AWAITING PAYMENT",
-                LocalDateTime.now().plusDays(5),
-                new BigDecimal(500));
+        return order;
     }
 
 }
