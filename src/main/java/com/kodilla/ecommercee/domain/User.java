@@ -1,5 +1,4 @@
 package com.kodilla.ecommercee.domain;
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,6 +16,7 @@ public class User {
     @Column(unique = true)
     private Long userId;
 
+    @NonNull
     @Column
     private String userName;
 
