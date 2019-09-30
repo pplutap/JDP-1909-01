@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-@Entity
+@Entity(name = "product_group")
 public class Group {
 
     @Id
