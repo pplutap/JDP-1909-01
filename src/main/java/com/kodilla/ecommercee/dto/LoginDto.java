@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class LoginDto {
 
-    private Boolean loggedIn;
+    private boolean loggedIn;
     private Long sessionId;
 
 }
