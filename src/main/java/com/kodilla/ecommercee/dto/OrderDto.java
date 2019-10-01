@@ -4,13 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderDto {
 
     private Long id;
@@ -20,4 +24,5 @@ public class OrderDto {
     private List<ProductDto> products;
     private String status;
     private LocalDateTime deliveryDate;
+    private BigDecimal orderValue;
 }
