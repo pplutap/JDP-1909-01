@@ -4,15 +4,17 @@ import com.kodilla.ecommercee.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Cart {
 
@@ -21,4 +23,17 @@ public class Cart {
     private Long id;
 
     private List<ProductDto>  products;
+
+  /*  @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "JOIN_CART_PRODUCT",
+            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")}
+    )
+    private List<Product> listProducts = new ArrayList<>(); */
+
+  /* Relacja jaka powinna po stronie encji Product
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "listProducts")
+    private List<Cart> listCarts = new ArrayList<>();
+   */
 }
