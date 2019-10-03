@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
@@ -38,6 +39,8 @@ public class OrderController {
         List<OrderDto> orders = new ArrayList<>();
         LocalDateTime purchaseDate = LocalDateTime.of(2019, Month.SEPTEMBER, 1, 10, 30, 0);
         LocalDateTime deliveryDate = purchaseDate.plusDays(5);
+        User buyer = new User();
+        User seller = new User();
         List<ProductDto> products = initializeSampleProducts();
         for (int i = 0; i < products.size(); i++) {
             List<ProductDto> productsList = new ArrayList<>();
@@ -46,7 +49,7 @@ public class OrderController {
                 productsList.add(products.get(j));
 
             }
-            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, "DELIVERED", deliveryDate, orderValue(productsList)));
+            orders.add(new OrderDto(orderId, buyer, seller, purchaseDate, productsList, "DELIVERED", deliveryDate, orderValue(productsList)));
         }
         return orders;
     }
@@ -87,7 +90,7 @@ public class OrderController {
                 .map(OrderDto::getId)
                 .max(Long::compareTo)
                 .orElse(0L);
-        OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
+        OrderDto newOrder = new OrderDto((maxId+1),new User(), new User(), LocalDateTime.now(), cartDto.getProducts(),
                 "AWAITING PAYMENT", LocalDateTime.now().plusDays(5), orderValue(cartDto.getProducts()));
         generateOrders().add(newOrder);
         return newOrder;
