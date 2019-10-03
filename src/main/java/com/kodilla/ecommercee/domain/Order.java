@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 public class Order  {
     @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
@@ -29,7 +30,7 @@ public class Order  {
     @Column
     private LocalDateTime purchaseDate;
 
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @Column
     private List<Product> products;
 
