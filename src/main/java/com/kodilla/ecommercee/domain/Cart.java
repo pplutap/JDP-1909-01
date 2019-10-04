@@ -24,16 +24,11 @@ public class Cart {
 
     private List<ProductDto>  products;
 
-  /*  @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "JOIN_CART_PRODUCT",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")}
     )
-    private List<Product> listProducts = new ArrayList<>(); */
-
-  /* Relacja jaka powinna po stronie encji Product
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "listProducts")
-    private List<Cart> listCarts = new ArrayList<>();
-   */
+    private List<Product> listProducts = new ArrayList<>();
 }
