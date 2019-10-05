@@ -20,23 +20,29 @@ public class Order  {
     private Long id;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "buyerId")
     private User buyer;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "sellerId")
     private User seller;
 
-    @Column
+    @NotNull
     private LocalDateTime purchaseDate;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @Column
+    @JoinTable(
+            name = "JOIN_PRODUCT_EMPLOYEE",
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")}
+    )
     private List<Product> products;
 
-    @Column
+    @NotNull
     private String status;
 
-    @Column(name = "deliveryDate")
+    @NotNull
     private LocalDateTime deliveryDate;
 }
