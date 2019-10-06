@@ -22,7 +22,7 @@ public class GroupTest {
     private GroupRepository groupRepository;
 
     @Test
-    public void givenStudent_whenSave_thenGetOk() {
+    public void testSaveAndGet() {
         //Given
         Group group = new Group(1L, "Chemia");
         groupRepository.save(group);
