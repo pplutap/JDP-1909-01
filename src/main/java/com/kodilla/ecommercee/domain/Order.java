@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name="ShoppingOrder")
 public class Order  {
     @Id
     @GeneratedValue
