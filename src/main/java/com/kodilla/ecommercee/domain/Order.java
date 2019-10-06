@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.domain;
 
-import com.kodilla.ecommercee.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +33,9 @@ public class Order  {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
-            name = "JOIN_PRODUCT_EMPLOYEE",
-            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")}
+            name = "JOIN_ORDER_PRODUCT",
+            joinColumns = {@JoinColumn(name = "orderId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "productId", referencedColumnName = "id")}
     )
     private List<Product> products;
 

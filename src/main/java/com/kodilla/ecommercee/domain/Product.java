@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,9 +29,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "groupId")
     private Group group;
-
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "products")
-    private List<Order> orders;
 
     public void clearId() {
         this.id = null;
