@@ -1,50 +1,43 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.GroupDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.ecommercee.mapper.GroupMapper;
+import com.kodilla.ecommercee.service.DbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/groups")
 public class GroupController {
+    @Autowired
+    private DbService dbService;
+    @Autowired
+    private GroupMapper groupMapper;
 
-    @GetMapping
+    @GetMapping(value = "getGroups")
     public List<GroupDto> getAllGroups() {
-        return getSampleData();
+        return groupMapper.mapToGroupDtoList(dbService.getAllGroups());
     }
 
-    private List<GroupDto> getSampleData() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        new GroupDto(1L, "Ubrania"),
-                        new GroupDto(2L, "Dodatki"),
-                        new GroupDto(3L, "Biżuteria"),
-                        new GroupDto(4L, "Obuwie")
-                ));
+    @GetMapping(value = "getGroup={id}")
+    public GroupDto getGroup(@PathVariable Long id) throws GroupNotFoundException {
+        return groupMapper.mapToGroupDto(dbService.getGroupById(id).orElseThrow(GroupNotFoundException::new));
     }
 
-    @GetMapping("/{id}")
-    public GroupDto getGroup(@PathVariable Long id) {
-        return getSampleData().get(0);
+    @PostMapping(value = "createGroup", consumes = APPLICATION_JSON_VALUE)
+    public void createGroup(@RequestBody GroupDto groupDto) {
+        dbService.saveGroup(groupMapper.mapToGroup(groupDto));
     }
 
-    @PostMapping
-    public GroupDto createGroup(@RequestBody GroupDto group) {
-        return group;
-    }
-
-    @PutMapping
-    public GroupDto updateGroup(@RequestBody GroupDto group) {
-        return group;
+    @PutMapping(value = "updateGroup",consumes = APPLICATION_JSON_VALUE)
+    public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
+        return groupMapper.mapToGroupDto(dbService.saveGroup(groupMapper.mapToGroup(groupDto)));
     }
 
 }
