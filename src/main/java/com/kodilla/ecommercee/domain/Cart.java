@@ -22,8 +22,6 @@ public class Cart {
     @GeneratedValue
     private Long id;
 
-    private List<ProductDto>  products;
-
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "JOIN_CART_PRODUCT",
