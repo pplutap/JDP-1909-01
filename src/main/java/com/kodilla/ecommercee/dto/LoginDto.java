@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class GroupDto {
+public class LoginDto {
 
-    private Long id;
-    private String name;
+    private boolean loggedIn;
+    private Long sessionId;
 
 }
