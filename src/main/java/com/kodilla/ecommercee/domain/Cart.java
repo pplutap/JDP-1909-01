@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
 public class Cart {
 
@@ -28,5 +27,7 @@ public class Cart {
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "id")}
     )
-    private List<Product> listProducts = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
+
+
 }
