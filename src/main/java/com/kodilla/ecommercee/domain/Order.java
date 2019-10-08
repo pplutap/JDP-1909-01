@@ -1,19 +1,22 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javafx.scene.layout.StackPane;
+import lombok.*;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity(name="ShoppingOrder")
+@Entity
 public class Order  {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -37,11 +40,21 @@ public class Order  {
             joinColumns = {@JoinColumn(name = "orderId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "productId", referencedColumnName = "id")}
     )
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     @NotNull
-    private String status;
+    private StatusEnum status;
 
     @NotNull
     private LocalDateTime deliveryDate;
+
+    @Builder
+    public Order(User buyer, User seller, LocalDateTime purchaseDate, List<Product> products, StatusEnum status, LocalDateTime deliveryDate){
+        this.buyer = buyer;
+        this.seller=seller;
+        this.purchaseDate=purchaseDate;
+        this.products= products;
+        this.status=status;
+        this.deliveryDate=deliveryDate;
+    }
 }

@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Entity
 public class Product {
