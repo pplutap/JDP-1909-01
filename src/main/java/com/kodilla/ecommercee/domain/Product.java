@@ -38,8 +38,4 @@ public class Product {
     @JoinColumn(name = "groupId")
     private Group group;
 
-    public void clearId() {
-        this.id = null;
-    }
-
 }
