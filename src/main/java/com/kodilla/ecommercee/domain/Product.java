@@ -27,6 +27,7 @@ public class Product {
     @Column(unique = true)
     private String name;
 
+    @Column(length = 2000)
     private String description;
 
     @NotNull
