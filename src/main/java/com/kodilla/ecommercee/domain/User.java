@@ -2,30 +2,27 @@ package com.kodilla.ecommercee.domain;
 import lombok.*;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Users")
+@Entity
 public class User {
 
     @Id
     @GeneratedValue
-    @NonNull
-    @Column(unique = true)
-    private Long userId;
+    private Long id;
 
-    @NonNull
-    @Column
+    @NotNull
+    @Column(unique = true)
     private String userName;
 
-    @NonNull
-    @Column
+    @NotNull
     private Integer status;
 
-    @NonNull
-    @Column
+    @NotNull
+    @Column(unique = true)
     private Long userKey;
 
 }
