@@ -1,19 +1,11 @@
 package com.kodilla.ecommercee.domain;
 
-//import javafx.scene.layout.StackPane;
-import lombok.*;
-import org.aspectj.weaver.ast.Or;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-//@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name="ShoppingOrder")
 public class Order  {
