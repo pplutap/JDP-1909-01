@@ -1,6 +1,6 @@
 package com.kodilla.ecommercee.domain;
 
-import javafx.scene.layout.StackPane;
+//import javafx.scene.layout.StackPane;
 import lombok.*;
 import org.aspectj.weaver.ast.Or;
 
