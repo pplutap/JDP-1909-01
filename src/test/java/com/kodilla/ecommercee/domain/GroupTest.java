@@ -31,7 +31,7 @@ public class GroupTest {
     @Test
     public void testSave() {
         //Given
-        Group group = groupRepository.save(new Group(null, "Chemia"));
+        groupRepository.save(new Group(null, "Chemia"));
         //When
         long size = groupRepository.count();
         //Then
@@ -44,7 +44,7 @@ public class GroupTest {
         Exception exception = null;
         //When
         try {
-            Group group = groupRepository.save(new Group(null, null));
+            groupRepository.save(new Group(null, null));
             entityManager.flush();
         } catch (Exception e) {
             exception = e;
