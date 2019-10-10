@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode
 @Entity
 public class Product {
 
@@ -27,6 +29,7 @@ public class Product {
     @Column(unique = true)
     private String name;
 
+    @Column(length = 2000)
     private String description;
 
     @NotNull
@@ -36,9 +39,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "groupId")
     private Group group;
-
-    public void clearId() {
-        this.id = null;
-    }
 
 }
