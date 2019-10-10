@@ -33,9 +33,9 @@ public class GroupTest {
         //Given
         Group group = groupRepository.save(new Group(null, "Chemia"));
         //When
-        int groupSize = groupRepository.findAll().size();
+        long size = groupRepository.count();
         //Then
-        assertEquals(1, groupSize);
+        assertEquals(1L, size);
     }
 
     @Test
@@ -70,9 +70,10 @@ public class GroupTest {
         groupRepository.save(new Group(group.getId(), "Nowa Chemia"));
         //When
         Optional<Group> updatedGroup = groupRepository.findById(group.getId());
+        long size = groupRepository.count();
         //Then
         assertEquals("Nowa Chemia", updatedGroup.get().getName());
-        assertEquals(1, groupRepository.findAll().size());
+        assertEquals(1L, size);
     }
 
     @Test
@@ -81,7 +82,8 @@ public class GroupTest {
         Group group = groupRepository.save(new Group(1L, "Chemia"));
         //When
         groupRepository.deleteById(group.getId());
+        long size = groupRepository.count();
         //Then
-        assertEquals(0, groupRepository.findAll().size());
+        assertEquals(0L, size);
     }
 }
