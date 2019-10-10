@@ -13,8 +13,9 @@ import java.util.List;
 
 @Getter
 @Setter
+//@AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name="ShoppingOrder")
 public class Order  {
 
     @Id
