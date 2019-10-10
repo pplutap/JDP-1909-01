@@ -7,10 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -18,6 +24,9 @@ public class GroupTest {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Test
     public void testSave() {
@@ -27,6 +36,21 @@ public class GroupTest {
         int groupSize = groupRepository.findAll().size();
         //Then
         assertEquals(1, groupSize);
+    }
+
+    @Test
+    public void testSaveWrongData() {
+        //Given
+        Exception exception = null;
+        //When
+        try {
+            Group group = groupRepository.save(new Group(null, null));
+            entityManager.flush();
+        } catch (Exception e) {
+            exception = e;
+        }
+        //Then
+        assertThat(exception, is(notNullValue()));
     }
 
     @Test
