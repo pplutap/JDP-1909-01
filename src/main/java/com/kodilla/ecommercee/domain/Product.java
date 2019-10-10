@@ -27,6 +27,7 @@ public class Product {
     @Column(unique = true)
     private String name;
 
+    @Column(length = 2000)
     private String description;
 
     @NotNull
@@ -36,9 +37,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "groupId")
     private Group group;
-
-    public void clearId() {
-        this.id = null;
-    }
 
 }
