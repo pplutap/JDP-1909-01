@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
@@ -11,17 +12,16 @@ public class User {
 
     @Id
     @GeneratedValue
-    @NonNull
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(unique = true)
     private String userName;
 
-    @NonNull
+    @NotNull
     private Integer status;
 
-    @NonNull
+    @NotNull
     @Column(unique = true)
     private Long userKey;
 
