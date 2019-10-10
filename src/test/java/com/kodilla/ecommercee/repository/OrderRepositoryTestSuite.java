@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,9 @@ public class OrderRepositoryTestSuite {
 
     @Autowired
     private UserRepository userRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Test
     public void testCreateNewOrderIfGivenValidOrderObject() {
@@ -73,21 +78,13 @@ public class OrderRepositoryTestSuite {
     @Test
     public void testThrowExceptionIfGivenInvalidOrderObject() {
         //Given
-        Order invalidOrder = new Order(
-                null,
-                null,
-                null,
-                null,
-                new ArrayList<>(),
-                null,
-                null
-        );
+        Order invalidOrder = new Order(null, null, null, null, new ArrayList<>(), null, null);
 
         //When
         Exception exception = null;
-        Order createdOrder = null;
         try {
-            createdOrder = orderRepository.save(invalidOrder);
+            orderRepository.save(invalidOrder);
+            entityManager.flush();
         } catch (Exception e) {
             exception = e;
         }
