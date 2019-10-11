@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.StatusEnum;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
@@ -53,7 +54,7 @@ public class OrderController {
                 productsList.add(products.get(j));
 
             }
-            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, "DELIVERED", deliveryDate, orderValue(productsList)));
+            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, StatusEnum.DELIVERED, deliveryDate, orderValue(productsList)));
         }
         return orders;
     }
@@ -95,7 +96,7 @@ public class OrderController {
                 .max(Long::compareTo)
                 .orElse(0L);
         OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
-                "AWAITING PAYMENT", LocalDateTime.now().plusDays(5), orderValue(cartDto.getProducts()));
+                StatusEnum.DELIVERED, LocalDateTime.now().plusDays(5), orderValue(cartDto.getProducts()));
         generateOrders().add(newOrder);
         return newOrder;
     }
