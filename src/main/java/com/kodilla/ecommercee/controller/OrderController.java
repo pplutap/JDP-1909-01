@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.StatusEnum;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.dto.ProductDto;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +17,39 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/v1/orders")
+@CrossOrigin("*")
 public class OrderController {
 
     public OrderController() {
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<OrderDto> getOrders() {
+        return generateOrders();
+    }
+
+    private List<OrderDto> generateOrders() {
+        List<OrderDto> orders = new ArrayList<>();
+        LocalDateTime purchaseDate = LocalDateTime.of(2019, Month.SEPTEMBER, 1, 10, 30, 0);
+        LocalDateTime deliveryDate = purchaseDate.plusDays(5);
+        List<ProductDto> products = initializeSampleProducts();
+        for (int i = 1; i <= products.size(); i++) {
+            List<ProductDto> orderedProducts = products.subList(0, i);
+            String productIds = orderedProducts.stream()
+                    .map(ProductDto::getId)
+                    .map(Object::toString)
+                    .collect(Collectors.joining(","));
+            Long orderId = (long) i;
+            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productIds, StatusEnum.DELIVERED, deliveryDate,
+                    orderValue(orderedProducts)));
+        }
+        return orders;
     }
 
     private List<ProductDto> initializeSampleProducts() {
@@ -35,41 +61,17 @@ public class OrderController {
                     (long) (id + 1),
                     names[id],
                     descripiton,
-                    new BigDecimal(id*100),
-                    (long)id
+                    new BigDecimal((id + 1) * 100),
+                    (long) id
             ));
         }
         return products;
-    }
-
-    private List<OrderDto> generateOrders() {
-        List<OrderDto> orders = new ArrayList<>();
-        LocalDateTime purchaseDate = LocalDateTime.of(2019, Month.SEPTEMBER, 1, 10, 30, 0);
-        LocalDateTime deliveryDate = purchaseDate.plusDays(5);
-        List<ProductDto> products = initializeSampleProducts();
-        for (int i = 0; i < products.size(); i++) {
-            List<ProductDto> productsList = new ArrayList<>();
-            Long orderId = Long.valueOf(i + 1);
-            for (int j = 0; j <= i; j++) {
-                productsList.add(products.get(j));
-
-            }
-            orders.add(new OrderDto(orderId, 1L, 2L, purchaseDate, productsList, StatusEnum.DELIVERED, deliveryDate, orderValue(productsList)));
-        }
-        return orders;
     }
 
     private BigDecimal orderValue(List<ProductDto> products) {
         return products.stream()
                 .map(ProductDto::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-
-
-    @RequestMapping(method = RequestMethod.GET)
-    public List<OrderDto> getOrders(){
-        return generateOrders();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{orderId}")
@@ -81,7 +83,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId){
+    public void deleteOrder(@PathVariable Long orderId) {
         OrderDto orderToDelete = generateOrders().stream()
                 .filter(product -> product.getId().equals(orderId))
                 .findFirst()
@@ -95,7 +97,11 @@ public class OrderController {
                 .map(OrderDto::getId)
                 .max(Long::compareTo)
                 .orElse(0L);
-        OrderDto newOrder = new OrderDto((maxId+1), 1L, 2L, LocalDateTime.now(), cartDto.getProducts(),
+        String productIds = cartDto.getProducts().stream()
+                .map(ProductDto::getId)
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+        OrderDto newOrder = new OrderDto((maxId + 1), 1L, 2L, LocalDateTime.now(), productIds,
                 StatusEnum.DELIVERED, LocalDateTime.now().plusDays(5), orderValue(cartDto.getProducts()));
         generateOrders().add(newOrder);
         return newOrder;
@@ -114,4 +120,5 @@ public class OrderController {
         generateOrders().add(orderDto);
         return orderDto;
     }
+
 }
