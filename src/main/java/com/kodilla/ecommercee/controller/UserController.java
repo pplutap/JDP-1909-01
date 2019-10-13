@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.dto.LoginDto;
 import com.kodilla.ecommercee.dto.UserDto;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,9 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUsers() {
         return Arrays.asList(
-                new UserDto(1L, "Piotr", 1, 25678L),
-                new UserDto(2L, "Admin", 1, 84635L),
-                new UserDto(3L, "User", 0, 97256L)
+                new UserDto(1L, "Piotr", "Piotr123", 1, 25678L),
+                new UserDto(2L, "Admin", "admin666", 1, 84635L),
+                new UserDto(3L, "User", "user963", 0, 97256L)
         );
     }
 
@@ -41,11 +40,6 @@ public class UserController {
 
     @PutMapping("/{id}/session")
     public void createSessionKey(@PathVariable Long id) {
-    }
-
-    @GetMapping("/{id}")
-    public LoginDto loginUser() {
-        return new LoginDto(Boolean.TRUE, 12345L);
     }
 
 }
