@@ -1,6 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,27 +20,12 @@ import java.util.List;
 @RequestMapping("/v1/products")
 public class ProductController {
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping
     public List<ProductDto> getAllProducts() {
-        return getSampleData();
-    }
-
-    private List<ProductDto> getSampleData() {
-        String[] names = {"kurtka zimowa", "płaszcz", "buty", "rękawiczki", "sandały", "zegarek", "złote kolczyki"};
-        String description = "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor.";
-        int[] prices = {100, 150, 100, 50, 80, 250, 300};
-        long[] groupIds = {1, 1, 4, 2, 4, 3, 3};
-        List<ProductDto> sampleProducts = new ArrayList<>();
-        for (int id = 0; id < names.length; id++) {
-            sampleProducts.add(new ProductDto(
-                    (long) (id + 1),
-                    names[id],
-                    description,
-                    new BigDecimal(prices[id]),
-                    groupIds[id]
-            ));
-        }
-        return sampleProducts;
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
@@ -61,3 +48,43 @@ public class ProductController {
     }
 
 }
+//public class TaskController {
+//    @Autowired
+//    private DbService service;
+//    @Autowired
+//    private TaskMapper taskMapper;
+//
+//    @RequestMapping(method = RequestMethod.GET, value = "getTasks")
+//    public List<TaskDto> getTasks(){
+//        return taskMapper.mapToTaskDtoList(service.getAllTasks());
+//    }
+//
+//    @RequestMapping(method = RequestMethod.GET, value = "getTaskById")
+//    public TaskDto getTasksById(@RequestParam(name = "id") Long taskId){
+//        return taskMapper.mapToTaskDto(service.findTaskById(taskId));
+//    }
+//
+//    @RequestMapping(method = RequestMethod.GET, value = "getTask")
+//    public TaskDto getTask(@RequestParam(name = "id") Long taskId){
+//
+//        return new TaskDto(taskId,"Test title", "Test content");
+//    }
+//
+//    //Request param zmienia wartosc wymagana w linku, teraz jest ?id bez niego byloby ?taskId
+//    @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
+//    public void deleteTask(@RequestParam(name = "id") Long taskId){
+//        service.deleteTask(taskId);
+//    }
+//
+//    @RequestMapping(method = RequestMethod.PUT, value = "updateTask")
+//    public TaskDto updateTask(@RequestBody TaskDto taskDto){
+//        return taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(taskDto)));
+//    }
+//
+//    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = APPLICATION_JSON_VALUE)
+//    public void createTask(@RequestBody TaskDto taskDto){
+//        service.saveTask(taskMapper.mapToTask(taskDto));
+//    }
+//
+//
+//}
