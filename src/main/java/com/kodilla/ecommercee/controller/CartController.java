@@ -17,43 +17,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/carts")
 @CrossOrigin("*")
 public class CartController {
 
-    private List<ProductDto> sampleCart;
-
-    private List<ProductDto> products;
-
-    public CartController() {
-        products = getSampleData();
-        sampleCart = new ArrayList<>(Arrays.asList(products.get(0), products.get(2), products.get(5)));
-    }
-
-    private List<ProductDto> getSampleData() {
-        String[] names = {"kurtka zimowa", "płaszcz", "buty", "rękawiczki", "sandały", "zegarek", "złote kolczyki"};
-        String description = "Pellentesque tempus interdum quam ut rhoncus. Donec ullamcorper turpis dolor.";
-        int[] prices = {100, 150, 100, 50, 80, 250, 300};
-        long[] groupIds = {1, 1, 4, 2, 4, 3, 3};
-        List<ProductDto> sampleProducts = new ArrayList<>();
-        for (int id = 0; id < names.length; id++) {
-            sampleProducts.add(new ProductDto(
-                    (long) (id + 1),
-                    names[id],
-                    description,
-                    new BigDecimal(prices[id]),
-                    groupIds[id]
-            ));
-        }
-        return sampleProducts;
-    }
-
     @GetMapping("{id}/products")
     public List<ProductDto> getProductsFromCart(@PathVariable Long id) {
-        return sampleCart;
+        return getSampleProducts();
     }
 
     private List<ProductDto> getSampleProducts() {
@@ -73,19 +45,12 @@ public class CartController {
 
     @PutMapping("/{id}/products/{productId}")
     public List<ProductDto> addProductToCart(@PathVariable Long id, @PathVariable Long productId) {
-        ProductDto product = products.stream()
-                .filter(productDto -> productDto.getId().equals(productId))
-                .collect(Collectors.toList()).get(0);
-        sampleCart.add(product);
-        return sampleCart;
+        return getSampleProducts();
     }
 
     @DeleteMapping("/{id}/products/{productId}")
     public List<ProductDto> removeProductFromCart(@PathVariable Long id, @PathVariable Long productId) {
-        sampleCart = sampleCart.stream()
-                .filter(productDto -> !productDto.getId().equals(productId))
-                .collect(Collectors.toList());
-        return sampleCart;
+        return getSampleProducts();
     }
 
     @PostMapping("/{id}/orders")
