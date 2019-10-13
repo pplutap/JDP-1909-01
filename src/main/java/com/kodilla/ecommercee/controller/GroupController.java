@@ -42,7 +42,7 @@ public class GroupController {
         return getSampleData().get(0);
     }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @PostMapping
     public GroupDto createGroup(@RequestBody GroupDto group) {
         return group;
     }
