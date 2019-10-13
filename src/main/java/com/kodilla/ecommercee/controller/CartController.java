@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/carts")
 @CrossOrigin("*")
@@ -53,7 +55,7 @@ public class CartController {
         return getSampleProducts();
     }
 
-    @PostMapping("/{id}/orders")
+    @PostMapping(path = "/{id}/orders", consumes = APPLICATION_JSON_VALUE)
     public OrderDto createOrder(@PathVariable Long id, @RequestBody OrderDto order) {
         return order;
     }

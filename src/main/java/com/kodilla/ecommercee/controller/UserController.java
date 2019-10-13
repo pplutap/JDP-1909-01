@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/users")
 @CrossOrigin("*")
@@ -28,7 +30,7 @@ public class UserController {
         );
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public UserDto createUser(@RequestBody UserDto user) {
         return user;
     }

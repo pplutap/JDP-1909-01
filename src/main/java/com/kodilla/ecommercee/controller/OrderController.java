@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/orders")
 @CrossOrigin("*")
@@ -62,7 +64,7 @@ public class OrderController {
         generateOrders().remove(orderToDelete);
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public OrderDto createOrder(@RequestBody CartDto cartDto) {
         long maxId = generateOrders().stream()
                 .map(OrderDto::getId)
@@ -81,7 +83,7 @@ public class OrderController {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    @PutMapping
+    @PutMapping(consumes = APPLICATION_JSON_VALUE)
     public OrderDto updateOrder(@RequestBody OrderDto orderDto) {
         if (orderDto.getId() == null) {
             throw new RuntimeException("Order id can't be null.");

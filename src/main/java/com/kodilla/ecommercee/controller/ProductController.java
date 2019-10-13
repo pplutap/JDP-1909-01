@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/products")
 @CrossOrigin("*")
@@ -55,12 +57,12 @@ public class ProductController {
         return getSampleData().get(0);
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ProductDto createProduct(@RequestBody ProductDto product) {
         return product;
     }
 
-    @PutMapping
+    @PutMapping(consumes = APPLICATION_JSON_VALUE)
     public ProductDto updateProduct(@RequestBody ProductDto product) {
         return product;
     }

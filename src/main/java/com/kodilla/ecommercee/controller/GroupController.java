@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/v1/groups")
 @CrossOrigin(origins = "*")
@@ -39,12 +41,12 @@ public class GroupController {
         return getSampleData().get(0);
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public GroupDto createGroup(@RequestBody GroupDto group) {
         return group;
     }
 
-    @PutMapping
+    @PutMapping(consumes = APPLICATION_JSON_VALUE)
     public GroupDto updateGroup(@RequestBody GroupDto group) {
         return group;
     }
