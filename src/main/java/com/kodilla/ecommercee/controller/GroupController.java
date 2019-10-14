@@ -1,50 +1,42 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.GroupDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.ecommercee.mapper.GroupMapper;
+import com.kodilla.ecommercee.service.GroupService;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/v1/groups")
 public class GroupController {
+    private final GroupService groupService;
+    private final GroupMapper groupMapper;
+
+    public GroupController(final GroupService groupService, final GroupMapper groupMapper) {
+        this.groupService = groupService;
+        this.groupMapper = groupMapper;
+    }
 
     @GetMapping
     public List<GroupDto> getAllGroups() {
-        return getSampleData();
-    }
-
-    private List<GroupDto> getSampleData() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        new GroupDto(1L, "Ubrania"),
-                        new GroupDto(2L, "Dodatki"),
-                        new GroupDto(3L, "Biżuteria"),
-                        new GroupDto(4L, "Obuwie")
-                ));
+        return groupMapper.mapToGroupDtoList(groupService.getAllGroups());
     }
 
     @GetMapping("/{id}")
     public GroupDto getGroup(@PathVariable Long id) {
-        return getSampleData().get(0);
+        return groupMapper.mapToGroupDto(groupService.getGroupById(id));
     }
 
-    @PostMapping
-    public GroupDto createGroup(@RequestBody GroupDto group) {
-        return group;
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public GroupDto createGroup(@RequestBody GroupDto groupDto) {
+        return groupMapper.mapToGroupDto(groupService.createGroup(groupMapper.mapToGroup(groupDto)));
     }
 
-    @PutMapping
-    public GroupDto updateGroup(@RequestBody GroupDto group) {
-        return group;
+    @PutMapping(consumes = APPLICATION_JSON_VALUE)
+    public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
+        return groupMapper.mapToGroupDto(groupService.updateGroup(groupMapper.mapToGroup(groupDto)));
     }
-
 }
