@@ -5,22 +5,16 @@ import com.kodilla.ecommercee.domain.Product;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.Optional;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringRunner.class)
@@ -32,13 +26,16 @@ public class ProductRepositoryTestSuite {
     @Autowired
     private GroupRepository groupRepository;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Test
     public void testSavingNewProductObject() {
         //Given
-        Group group = groupRepository.save(new Group(10L, "test group_1"));
+        Group group = groupRepository.save(new Group(null, "test group_1"));
 
         Product testProduct1 = new Product(
-                100L,
+                null,
                 "kaftan",
                 "kaftan skorzany",
                 new BigDecimal("100"),
@@ -49,17 +46,15 @@ public class ProductRepositoryTestSuite {
         long id = testProduct2.getId();
         Optional<Product> savedProduct = productRepository.findById(id);
         Assert.assertTrue(savedProduct.isPresent());
-        //Clean up
-        productRepository.deleteAll();
     }
 
     @Test
     public void testGettingSelectedProductObject(){
         //Given
-        Group group = groupRepository.save(new Group(100L,"test_group_2"));
+        Group group = groupRepository.save(new Group(null,"test_group_2"));
 
         Product testProduct1 = new Product(
-                101L,
+                null,
                 "obcegi",
                 "obcegi tytanowe",
                 new BigDecimal("10"),
@@ -71,17 +66,15 @@ public class ProductRepositoryTestSuite {
         Optional<Product> selectedProduct = productRepository.findById(id);
         String name = selectedProduct.get().getName();
         Assert.assertEquals("obcegi", name);
-        //Clean up
-        productRepository.deleteAll();
     }
 
     @Test
     public void testUpdatingProductObject(){
         //Given
-        Group group = groupRepository.save(new Group(1000L, "test_group_3"));
+        Group group = groupRepository.save(new Group(null, "test_group_3"));
 
         Product testProduct1 = new Product(
-                102L,
+                null,
                 "bavaria",
                 "piwo light",
                 new BigDecimal("4"),
@@ -99,17 +92,15 @@ public class ProductRepositoryTestSuite {
         Optional <Product> updatedProduct = productRepository.findById(id);
         //Then
         Assert.assertEquals("piwo niskoprocentowe", updatedProduct.get().getDescription());
-        //Clean up
-        productRepository.deleteAll();
     }
 
     @Test
     public void testDeletingProductObject(){
         //Given
-        Group group = groupRepository.save(new Group(10000L, "test_group_4"));
+        Group group = groupRepository.save(new Group(null, "test_group_4"));
 
         Product testProduct1 = new Product(
-                103L,
+                null,
                 "BTR 401",
                 "transporter opancerzony",
                 new BigDecimal("10000"),
@@ -118,11 +109,28 @@ public class ProductRepositoryTestSuite {
         //When
         long id = testProduct2.getId();
         Optional<Product> selectedProduct = productRepository.findById(id);
-        Assert.assertTrue(selectedProduct.isPresent());
+        boolean beforeDeleting = selectedProduct.isPresent();
         productRepository.deleteById(id);
         Optional<Product> deletedProduct = productRepository.findById(id);
-        Assert.assertFalse(deletedProduct.isPresent());
-        //Clean up
-        productRepository.deleteAll();
+        boolean afterDeleting = deletedProduct.isPresent();
+        //Then
+        Assert.assertTrue(beforeDeleting);
+        Assert.assertFalse(afterDeleting);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testSavingInvalidProductObject(){
+        //Given
+        Product product = new Product(
+                null,
+                null,
+                "invalid object",
+                null,
+                null);
+
+        productRepository.save(product);
+        //When
+        entityManager.flush();
+        //Then
     }
 }
