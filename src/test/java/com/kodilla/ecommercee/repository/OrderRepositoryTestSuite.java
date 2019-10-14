@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +25,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -77,24 +77,18 @@ public class OrderRepositoryTestSuite {
         assertThat(retrievedOrders, hasItem(createdOrder));
     }
 
-    @Test
+    @Test(expected = ConstraintViolationException.class)
     public void testThrowExceptionIfGivenInvalidOrderObjectToSave() {
         //Given
         Order invalidOrder = Order.builder()
                 .products(new ArrayList<>())
                 .build();
-        Exception exception = null;
 
         //When
-        try {
-            orderRepository.save(invalidOrder);
-            entityManager.flush();
-        } catch (Exception e) {
-            exception = e;
-        }
+        orderRepository.save(invalidOrder);
+        entityManager.flush();
 
         //Then
-        assertThat(exception, is(notNullValue()));
     }
 
     @Test
