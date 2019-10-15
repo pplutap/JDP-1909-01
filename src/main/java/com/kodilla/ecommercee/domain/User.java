@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -27,10 +28,17 @@ public class User {
     private String userName;
 
     @NotNull
+    private String password;
+
+    @NotNull
     private Integer status;
 
     @NotNull
     @Column(unique = true)
     private Long userKey;
+
+    private String sessionKey;
+
+    private LocalDateTime sessionKeyExpireAt;
 
 }
