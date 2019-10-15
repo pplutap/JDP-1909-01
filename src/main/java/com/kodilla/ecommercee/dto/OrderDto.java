@@ -17,8 +17,6 @@ public class OrderDto {
     private Long buyerId;
     private Long sellerId;
     private LocalDateTime purchaseDate;
-    private String productIds;
-    //    private List<ProductDto> products;
     private StatusEnum status;
     private LocalDateTime deliveryDate;
     private BigDecimal orderValue;
