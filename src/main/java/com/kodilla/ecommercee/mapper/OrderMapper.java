@@ -4,11 +4,7 @@ import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.OrderDto;
-import com.kodilla.ecommercee.dto.ProductDto;
-import com.kodilla.ecommercee.exception.NotFoundException;
-import com.kodilla.ecommercee.repository.GroupRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
-import com.kodilla.ecommercee.service.OrderService;
+import com.kodilla.ecommercee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,37 +15,16 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapper {
 
-    private final UserRepository userRepository; //zmienić na serwisy
-    private final GroupRepository groupRepository; //do wyrzucenia jak już będzie mapper do produktu
-    private final OrderService orderService;
+    private final UserService userService;
 
     @Autowired
-    public OrderMapper(final UserRepository userRepository, final GroupRepository groupRepository,
-                       final OrderService orderService) {
-        this.userRepository = userRepository;
-        this.groupRepository = groupRepository;
-        this.orderService = orderService;
+    public OrderMapper(final UserService userService) {
+        this.userService = userService;
     }
 
-    public Order mapToOrder(final OrderDto orderDto, final List<ProductDto> productDtos) {
-        User buyer = userRepository.findById(orderDto.getBuyerId()).orElseThrow(
-                () -> new RuntimeException("User with id=" + orderDto.getBuyerId() + " doesn't exist.")
-        );
-        User seller = userRepository.findById(orderDto.getSellerId()).orElseThrow(
-                () -> new RuntimeException("User with id=" + orderDto.getSellerId() + " doesn't exist.")
-        );
-        List<Product> products = productDtos.stream()
-                .map(productDto -> new Product(
-                        productDto.getId(),
-                        productDto.getName(),
-                        productDto.getDescription(),
-                        productDto.getPrice(),
-                        groupRepository.findById(productDto.getGroupId()).orElseThrow(
-                                () -> new NotFoundException("Group with id=" + productDto.getGroupId() + " doesn't " +
-                                        "exist.")
-                        )
-                ))
-                .collect(Collectors.toList());
+    public Order mapToOrder(final OrderDto orderDto, final List<Product> products) {
+        User buyer = userService.getUser(orderDto.getBuyerId());
+        User seller = userService.getUser(orderDto.getSellerId());
         return new Order(
                 orderDto.getId(),
                 buyer,
