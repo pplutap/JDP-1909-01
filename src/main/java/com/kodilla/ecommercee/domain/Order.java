@@ -1,15 +1,30 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity(name="ShoppingOrder")
 public class Order  {
 
@@ -39,6 +54,7 @@ public class Order  {
     private List<Product> products = new ArrayList<>();
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
     @NotNull
