@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -16,12 +14,11 @@ import java.util.List;
 public class OrderDto {
 
     private Long id;
-    private Long buyerId;
-    private Long sellerId;
-    private LocalDateTime purchaseDate;
-    private List<ProductDto> products;
+    private String buyerName;
+    private String sellerName;
+    private LocalDate purchaseDate;
     private StatusEnum status;
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     private BigDecimal orderValue;
 
 }
