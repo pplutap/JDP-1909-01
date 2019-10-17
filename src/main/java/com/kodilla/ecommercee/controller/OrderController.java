@@ -12,7 +12,7 @@ import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.service.OrderService;
 import com.kodilla.ecommercee.service.ProductService;
 import com.kodilla.ecommercee.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +31,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/v1/orders")
 @CrossOrigin("*")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderMapper orderMapper;
@@ -40,6 +39,18 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
     private final ProductService productService;
+
+    @Autowired
+    public OrderController(final OrderMapper orderMapper, final CartMapper cartMapper,
+                           final ProductMapper productMapper, final OrderService orderService,
+                           final UserService userService, final ProductService productService) {
+        this.orderMapper = orderMapper;
+        this.cartMapper = cartMapper;
+        this.productMapper = productMapper;
+        this.orderService = orderService;
+        this.userService = userService;
+        this.productService = productService;
+    }
 
     @GetMapping
     public List<OrderDto> getOrders() {
