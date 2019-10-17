@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.service.GroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class ProductMapper {
 
     private final GroupService groupService;
 
+    @Autowired
     public ProductMapper(final GroupService groupService) {
         this.groupService = groupService;
     }
