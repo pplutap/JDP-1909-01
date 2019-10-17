@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,10 +60,10 @@ public class OrderRepositoryTestSuite {
         Order newOrder = Order.builder()
                 .buyer(buyer)
                 .seller(seller)
-                .purchaseDate(LocalDateTime.of(2019, 9, 1, 12, 15))
+                .purchaseDate(LocalDate.of(2019, 9, 1))
                 .products(Arrays.asList(product1, product2))
                 .status(StatusEnum.DELIVERED)
-                .deliveryDate(LocalDateTime.of(2019, 9, 1, 12, 15))
+                .deliveryDate(LocalDate.of(2019, 9, 5))
                 .build();
 
         //When

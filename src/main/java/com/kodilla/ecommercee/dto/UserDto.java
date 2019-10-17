@@ -16,5 +16,6 @@ public class UserDto {
     private String password;
     private Integer status;
     private Long userKey;
+    private String emailAddress;
 
 }

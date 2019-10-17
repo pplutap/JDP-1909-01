@@ -41,4 +41,7 @@ public class User {
 
     private LocalDateTime sessionKeyExpireAt;
 
+    @NotNull
+    private String emailAddress;
+
 }

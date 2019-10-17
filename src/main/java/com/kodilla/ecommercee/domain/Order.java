@@ -1,12 +1,11 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,16 +16,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@Entity(name="ShoppingOrder")
-public class Order  {
+@AllArgsConstructor
+@Entity(name = "ShoppingOrder")
+public class Order {
 
     @Id
     @GeneratedValue
@@ -43,9 +42,9 @@ public class Order  {
     private User seller;
 
     @NotNull
-    private LocalDateTime purchaseDate;
+    private LocalDate purchaseDate;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
             name = "JOIN_ORDER_PRODUCT",
             joinColumns = {@JoinColumn(name = "orderId", referencedColumnName = "id")},
@@ -58,15 +57,16 @@ public class Order  {
     private StatusEnum status;
 
     @NotNull
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
 
     @Builder
-    public Order(User buyer, User seller, LocalDateTime purchaseDate, List<Product> products, StatusEnum status, LocalDateTime deliveryDate){
+    public Order(User buyer, User seller, LocalDate purchaseDate, List<Product> products, StatusEnum status, LocalDate deliveryDate) {
         this.buyer = buyer;
-        this.seller=seller;
-        this.purchaseDate=purchaseDate;
-        this.products= products;
-        this.status=status;
-        this.deliveryDate=deliveryDate;
+        this.seller = seller;
+        this.purchaseDate = purchaseDate;
+        this.products = products;
+        this.status = status;
+        this.deliveryDate = deliveryDate;
     }
+
 }
