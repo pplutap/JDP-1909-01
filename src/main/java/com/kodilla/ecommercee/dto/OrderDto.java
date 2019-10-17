@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 public class OrderDto {
 
     private Long id;
-    private Long buyerId;
-    private Long sellerId;
-    private LocalDateTime purchaseDate;
-    private String productIds;
-    //    private List<ProductDto> products;
+    private String buyerName;
+    private String sellerName;
+    private LocalDate purchaseDate;
     private StatusEnum status;
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     private BigDecimal orderValue;
 
 }
