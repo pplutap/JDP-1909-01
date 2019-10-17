@@ -23,8 +23,8 @@ public class OrderMapper {
     }
 
     public Order mapToOrder(final OrderDto orderDto, final List<Product> products) {
-        User buyer = userService.getUser(orderDto.getBuyerId());
-        User seller = userService.getUser(orderDto.getSellerId());
+        User buyer = userService.getUserByName(orderDto.getBuyerName());
+        User seller = userService.getUserByName(orderDto.getSellerName());
         return new Order(
                 orderDto.getId(),
                 buyer,
@@ -45,19 +45,20 @@ public class OrderMapper {
     public OrderDto mapToOrderDto(final Order order) {
         return new OrderDto(
                 order.getId(),
-                order.getBuyer().getId(),
-                order.getSeller().getId(),
+                order.getBuyer().getUserName(),
+                order.getSeller().getUserName(),
                 order.getPurchaseDate(),
                 order.getStatus(),
                 order.getDeliveryDate(),
-                calculateOrderValue(order)
+                calculateProductsValue(order.getProducts())
         );
     }
 
-    private BigDecimal calculateOrderValue(final Order order) {
-        return order.getProducts().stream()
+    private BigDecimal calculateProductsValue(final List<Product> products) {
+        BigDecimal sum = products.stream()
                 .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return sum;
     }
 
 }

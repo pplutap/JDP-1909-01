@@ -14,8 +14,8 @@ import java.time.LocalDate;
 public class OrderDto {
 
     private Long id;
-    private Long buyerId;
-    private Long sellerId;
+    private String buyerName;
+    private String sellerName;
     private LocalDate purchaseDate;
     private StatusEnum status;
     private LocalDate deliveryDate;
