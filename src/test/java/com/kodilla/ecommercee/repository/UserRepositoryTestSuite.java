@@ -20,7 +20,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void testUserRead() {
         //Given
-        User user1 = new User(20L, "Waldek", "wald434", 1, 144456L, null, null);
+        User user1 = new User(20L, "Waldek", "wald434", 1, 144456L, null, null, "aaaaaa@aaaaa.com");
 
         //When
         User user2 = userRepository.save(user1);
@@ -38,7 +38,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void testUserAdd() {
         //Given
-        User user1 = new User(20L, "Jan", "jan999", 1, 123456L, null, null);
+        User user1 = new User(20L, "Jan", "jan999", 1, 123456L, null, null, "aaaaaa@aaaaa.com");
 
         //When
         User user2 = userRepository.save(user1);
@@ -55,10 +55,10 @@ public class UserRepositoryTestSuite {
     @Test
     public void testUserUpdate() {
         //Given
-        User user1 = new User(1L, "Jerzy", "jurek32", 1, 987654L, null, null);
+        User user1 = new User(1L, "Jerzy", "jurek32", 1, 987654L, null, null, "aaaaaa@aaaaa.com");
         User user2 = userRepository.save(user1);
         long id = user2.getId();
-        user1 = new User(id, "Henryk", "henry321", 1, 987654L, null, null);
+        user1 = new User(id, "Henryk", "henry321", 1, 987654L, null, null, "aaaaaa@aaaaa.com");
         userRepository.save(user1);
 
         //When
@@ -74,7 +74,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void testUserDelete() {
         //Given
-        User user1 = new User(1L, "Kuba", "kubi567", 1, 654321L, null, null);
+        User user1 = new User(1L, "Kuba", "kubi567", 1, 654321L, null, null, "aaaaaa@aaaaa.com");
 
         //When
         User user2 = userRepository.save(user1);

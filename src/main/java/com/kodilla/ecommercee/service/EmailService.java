@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.Email;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,6 +10,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
+    @Autowired
     public EmailService(final JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }

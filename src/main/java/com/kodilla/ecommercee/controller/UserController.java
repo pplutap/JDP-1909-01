@@ -23,9 +23,9 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUsers() {
         return Arrays.asList(
-                new UserDto(1L, "Piotr", "Piotr123", 1, 25678L),
-                new UserDto(2L, "Admin", "admin666", 1, 84635L),
-                new UserDto(3L, "User", "user963", 0, 97256L)
+                new UserDto(1L, "Piotr", "Piotr123", 1, 25678L, "bbbbbbb@bbbbb.com"),
+                new UserDto(2L, "Admin", "admin666", 1, 84635L, "a@a.a"),
+                new UserDto(3L, "User", "user963", 0, 97256L, "ddddddd@ddddd.pl")
         );
     }
 

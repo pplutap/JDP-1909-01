@@ -23,7 +23,11 @@ public class EmailServiceTestSuite {
     @Test
     public void should_SendMail() {
         //Given
-        Email email = new Email("ecommercee.app@gmail.com", "Test subject", "Test message");
+        Email email = Email.builder()
+                .mailTo("ecommercee.app@gmail.com")
+                .subject("Test subject")
+                .message("Test message")
+                .build();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email.getMailTo());
         mailMessage.setSubject(email.getSubject());

@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.service;
 
+import com.kodilla.ecommercee.Email;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.Product;
@@ -19,16 +20,23 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 public class OrderService {
 
+    private final String SUBJECT = "Potwierdzenie złożenia zamówienia nr ";
+    private final String BUYER_MESSAGE = "Drogi <<<buyerName>>>\nPotwierdzamy złożenie zamówienia nr <<<orderNo>>> " +
+            "u <<<sellerName>>>.\nEcommercee App";
+    private final String SELLER_MESSAGE = "Drogi <<<sellerName>>>\n<<<buyerName>>> właśnie złożył u " +
+            "Ciebie zamówienie nr <<<orderNo>>>.\nEcommercee App";
+
     private final OrderRepository orderRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public OrderService(final OrderRepository orderRepository) {
+    public OrderService(final OrderRepository orderRepository, final EmailService emailService) {
         this.orderRepository = orderRepository;
+        this.emailService = emailService;
     }
 
     public List<Order> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
-        return orders;
+        return orderRepository.findAll();
     }
 
     public Order getOrder(final Long id) {
@@ -54,7 +62,28 @@ public class OrderService {
                 .status(StatusEnum.REGISTERED)
                 .deliveryDate(LocalDate.now().plus(daysToDeliver, DAYS))
                 .build();
-        return orderRepository.save(newOrder);
+        Order persistedOrder = orderRepository.save(newOrder);
+        Email buyerEmail = Email.builder()
+                .mailTo(persistedOrder.getBuyer().getEmailAddress())
+                .subject(SUBJECT + persistedOrder.getId())
+                .message(BUYER_MESSAGE
+                        .replace("<<<buyerName>>>", persistedOrder.getBuyer().getUserName())
+                        .replace("<<<orderNo>>>", persistedOrder.getId().toString())
+                        .replace("<<<sellerName>>>", persistedOrder.getSeller().getUserName())
+                )
+                .build();
+        Email sellerEmail = Email.builder()
+                .mailTo(persistedOrder.getBuyer().getEmailAddress())
+                .subject(SUBJECT + persistedOrder.getId())
+                .message(SELLER_MESSAGE
+                        .replace("<<<buyerName>>>", persistedOrder.getBuyer().getUserName())
+                        .replace("<<<orderNo>>>", persistedOrder.getId().toString())
+                        .replace("<<<sellerName>>>", persistedOrder.getSeller().getUserName())
+                )
+                .build();
+        emailService.send(buyerEmail);
+        emailService.send(sellerEmail);
+        return persistedOrder;
     }
 
     public Order updateOrder(final Long orderId, final StatusEnum status, final LocalDate deliveryDate) {
